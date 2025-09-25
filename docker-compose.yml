@@ -21,23 +21,16 @@ services:
     volumes:
       - ./api:/var/www/api
 
-  website:
-    build: ./website
-    container_name: todo_website_container
-    volumes:
-      - website-volume:/app/dist
-
   nginx:
-    image: nginx:alpine
+    build: ./website
     container_name: todo_nginx_container
     ports:
       - "8080:80"
     volumes:
-      - website-volume:/usr/share/nginx/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - website
       - api
+
 
 volumes:
   dbcache-mysql-data:
