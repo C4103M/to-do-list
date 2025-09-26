@@ -4,6 +4,7 @@ import Input from "./Input";
 import Label from "./Label";
 import Button from "./Button";
 import { useState } from "react";
+// import . from '../services/user'
 
 function Cadastro() {
   const navigate = useNavigate();
