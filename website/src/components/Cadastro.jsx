@@ -15,24 +15,23 @@ function Cadastro() {
 
   function verificarRegistro(e) {
     e.preventDefault();
+
     if (
       !user.trim() ||
       !password.trim() ||
       !confirmPassword.trim() ||
       !email.trim()
     ) {
-      return alert("Preencha todas as informações.");
+      alert("Preencha todas as informações.");
+      return;
     }
-    console.log(
-      "User:",
-      user,
-      "Password:",
-      password,
-      "ConfirmPassword:",
-      confirmPassword,
-      "Email:",
-      email
-    );
+
+    if (password !== confirmPassword) {
+      alert("A senha não coincide. Mude ou tente novamente");
+      return;
+    }
+
+    console.log("User:", user, "Password:", password, "Email:", email);
     setUser("");
     setPassword("");
     setConfirmPassword("");
@@ -87,7 +86,9 @@ function Cadastro() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Button type="submit">Entre</Button>
+            <Button type="submit">
+              Entre
+            </Button>
           </div>
         </form>
       </div>
