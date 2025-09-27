@@ -1,13 +1,25 @@
 <?php 
+require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+
 class Database {
-    private $host = "mysql";
-    private $db = "dbaura";
-    private $user = "aura_user";
-    private $pass = "1234";
-    private $charset = 'utf8mb4';
+    private $host = '';
+    private $db = '';
+    private $user = '';
+    private $pass = '';
+    private $charset = '';
     private $pdo;
 
     public function __construct() {
+        $this->host = $_ENV['DB_HOST'];
+        $this->db = $_ENV['DB_NAME'];
+        $this->user = $_ENV['DB_USER'];
+        $this->pass = $_ENV['DB_PASS'];
+        $this->charset = $_ENV['CHARSET'];
+
         $dns = "mysql:host={$this->host};dbname={$this->db};charset={$this->charset}";
         $options = [
             PDO::ATTR_ERRMODE =>PDO::ERRMODE_EXCEPTION,
@@ -25,9 +37,10 @@ class Database {
     }
 
 }
-$bd = new Database;
-$con = $bd->getConection();
-if($con) {
-    echo json_encode(["status" => "Conexão realisada com sucesso"]);
+function test_database() {
+    $bd = new Database;
+    $con = $bd->getConection();
+    if($con) {
+        echo json_encode(["status" => "Conexão realisada com sucesso"]);
+    }
 }
-echo 'tee';
