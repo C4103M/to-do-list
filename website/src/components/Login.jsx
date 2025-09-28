@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Input from "./Input";
 import Label from "./Label";
 import Button from "./Button";
-import { useState } from "react";
 // import . from '../services/user'
 
 function Login() {
@@ -14,14 +14,23 @@ function Login() {
     navigate(`/cadastro`);
   }
 
-  function verificarLogin(e) {
-    e.preventDefault();
-    if (!user.trim() || !password.trim()) {
-      return alert("Preencha o seu usuário e sua senha.");
+  function vaiParaHome() {
+    if (verificarLogin() == true) {
+      navigate(`/home`);
+    } else {
+      alert("Preencha o seu usuário e sua senha.");
     }
+  }
+
+  function verificarLogin() {
+    if (!user.trim() || !password.trim()) {
+      return false;
+    }
+
     console.log("User:", user, "Password:", password);
     setUser("");
     setPassword("");
+    return true;
   }
 
   return (
@@ -52,7 +61,9 @@ function Login() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Button type="submit">Entre</Button>
+            <Button type="submit" onClick={vaiParaHome}>
+              Entre
+            </Button>
             <Button type="button" onClick={vaiParaCadastro}>
               Cadastre-se
             </Button>
