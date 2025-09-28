@@ -1,9 +1,17 @@
+import { getUserFromStorage } from "../services/auth";
+
 function Home() {
-return (
+  const user = getUserFromStorage();
+
+  return (
     <div>
-        <h1>Hello, word!</h1>
+      {user ? (
+        <h1>Bem-vindo, {user.name}!</h1>
+      ) : (
+        <h1>Nenhum usuário logado.</h1>
+      )}
     </div>
-)
+  );
 }
 
-export default Home
+export default Home;

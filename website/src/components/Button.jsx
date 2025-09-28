@@ -1,8 +1,9 @@
-function Button({ children, ...props }) {
+function Button({ type = "button", children, onClick }) {
   return (
     <button
-      {...props}
-      className=" py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+      className="py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors w-full"
+      type={type}
+      onClick={onClick}
     >
       {children}
     </button>

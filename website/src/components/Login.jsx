@@ -3,7 +3,7 @@ import { useState } from "react";
 import Input from "./Input";
 import Label from "./Label";
 import Button from "./Button";
-// import . from '../services/user'
+import { getUserFromStorage } from "../services/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -14,11 +14,13 @@ function Login() {
     navigate(`/cadastro`);
   }
 
-  function vaiParaHome() {
-    if (verificarLogin() == true) {
+  function vaiParaHome(e) {
+    e.preventDefault();
+
+    if (verificarLogin()) {
       navigate(`/home`);
     } else {
-      alert("Preencha o seu usuário e sua senha.");
+      alert("Usuário ou senha incorretos.");
     }
   }
 
@@ -27,10 +29,20 @@ function Login() {
       return false;
     }
 
-    console.log("User:", user, "Password:", password);
-    setUser("");
-    setPassword("");
-    return true;
+    const savedUser = getUserFromStorage();
+
+    if (!savedUser) {
+      return false;
+    }
+
+    // aqui você compara: usuário digitado vs usuário salvo
+    if (savedUser.name === user && savedUser.password === password) {
+      setUser("");
+      setPassword("");
+      return true;
+    }
+
+    return false;
   }
 
   return (
@@ -39,7 +51,7 @@ function Login() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Login
         </h2>
-        <form className="space-y-4" onSubmit={verificarLogin}>
+        <form className="space-y-4" onSubmit={vaiParaHome}>
           <div>
             <Label className="block text-gray-600 text-sm mb-1">Usuário</Label>
             <Input
@@ -61,9 +73,7 @@ function Login() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Button type="submit" onClick={vaiParaHome}>
-              Entre
-            </Button>
+            <Button type="submit">Entre</Button>
             <Button type="button" onClick={vaiParaCadastro}>
               Cadastre-se
             </Button>
