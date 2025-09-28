@@ -1,7 +1,12 @@
 <?php 
-require __DIR__ . '/../vendor/autoload.php';
+namespace App\Config;
+use PDO;
+use PDOException;
+use Dotenv\Dotenv;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+require __DIR__ . '/../../vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 
