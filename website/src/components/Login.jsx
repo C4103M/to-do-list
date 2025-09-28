@@ -3,46 +3,24 @@ import { useState } from "react";
 import Input from "./Input";
 import Label from "./Label";
 import Button from "./Button";
-import { getUserFromStorage } from "../services/auth";
+import { vaiParaHome as homeHelper } from "../services/authHelpers";
 
 function Login() {
   const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
 
-  function vaiParaCadastro() {
-    navigate(`/cadastro`);
+  function resetInputs() {
+    setUser("");
+    setPassword("");
   }
 
   function vaiParaHome(e) {
-    e.preventDefault();
-
-    if (verificarLogin()) {
-      navigate(`/home`);
-    } else {
-      alert("Usuário ou senha incorretos.");
-    }
+    homeHelper(e, user, password, navigate, resetInputs);
   }
 
-  function verificarLogin() {
-    if (!user.trim() || !password.trim()) {
-      return false;
-    }
-
-    const savedUser = getUserFromStorage();
-
-    if (!savedUser) {
-      return false;
-    }
-
-    // aqui você compara: usuário digitado vs usuário salvo
-    if (savedUser.name === user && savedUser.password === password) {
-      setUser("");
-      setPassword("");
-      return true;
-    }
-
-    return false;
+  function vaiParaCadastro() {
+    navigate("/cadastro");
   }
 
   return (
@@ -59,7 +37,6 @@ function Login() {
               placeholder="Digite seu usuário"
               value={user}
               onChange={(e) => setUser(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div>
@@ -69,7 +46,6 @@ function Login() {
               placeholder="Digite sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div className="flex flex-col gap-2">

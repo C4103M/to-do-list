@@ -1,4 +1,4 @@
-import User from "../services/user";
+import User from "./user";
 import jwtEncode from "jwt-encode";
 
 function verificarRegistro({

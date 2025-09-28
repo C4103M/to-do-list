@@ -4,7 +4,7 @@ import { useState } from "react";
 import Input from "./Input";
 import Label from "./Label";
 import Button from "./Button";
-import verificarRegistro from "./verificarRegistro";
+import verificarRegistro from "../services/verificarRegistro";
 
 function Cadastro() {
   const navigate = useNavigate();
