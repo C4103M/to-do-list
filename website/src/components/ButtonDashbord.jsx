@@ -1,6 +1,6 @@
-function ButtonDashbord({ children }) {
+function ButtonDashbord({ children, ...props}) {
   return (
-    <button className="hover:bg-gray-200 p-2 rounded transition duration-300 block">
+    <button {...props} className="hover:bg-gray-200 p-2 rounded transition duration-300 block">
       {children}
     </button>
   );
