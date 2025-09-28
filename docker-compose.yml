@@ -5,7 +5,9 @@ services:
     restart: "always"
     environment:
       MYSQL_ROOT_PASSWORD: senha
-      MYSQL_DATABASE: dbaura
+      MYSQL_DATABASE: dbtodo
+      MYSQL_USER: todo_user
+      MYSQL_PASSWORD: secret123
     volumes:
       - dbcache-mysql-data:/var/lib/mysql
     ports:
