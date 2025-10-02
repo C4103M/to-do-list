@@ -15,13 +15,35 @@ export function verificarLogin(userInput, passwordInput) {
   return false;
 }
 
-export function vaiParaHome(e, userInput, passwordInput, navigate, resetInputs) {
+export async function vaiParaHome(e, user, password, navigate, resetInputs) {
   e.preventDefault();
 
-  if (verificarLogin(userInput, passwordInput)) {
+  if (!user.trim() || !password.trim()) {
+    alert("Preencha usuário e senha.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch("http://localhost:8080/api/public/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: user, password }),
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Usuário ou senha incorretos");
+    }
+
+    const dados = await resposta.json();
+
+    localStorage.setItem("token", dados.token);
+    localStorage.setItem("user", JSON.stringify(dados.user));
+
+    alert("Login realizado com sucesso!");
     resetInputs();
     navigate("/home");
-  } else {
-    alert("Usuário ou senha incorretos.");
+  } catch (erro) {
+    console.error(erro);
+    alert("Falha ao realizar login.");
   }
 }

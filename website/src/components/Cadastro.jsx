@@ -13,7 +13,46 @@ function Cadastro() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  console.log("Cadastro renderizado");
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const resultado = verificarRegistro({
+      name,
+      email,
+      password,
+      confirmPassword,
+    });
+
+    if (!resultado.valido) {
+      alert(resultado.mensagem);
+      return;
+    }
+
+    try {
+      const resposta = await fetch(
+        "http://localhost:8080/api/public/cadastro",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(resultado.user),
+        }
+      );
+
+      if (!resposta.ok) {
+        throw new Error("Erro no cadastro");
+      }
+
+      const dados = await resposta.json();
+
+      alert("Usuário cadastrado com sucesso!");
+      console.log("Resposta da API:", dados);
+
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao cadastrar usuário.");
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -27,13 +66,7 @@ function Cadastro() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Cadastro
         </h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault(); // evita reload da página
-            verificarRegistro({ name, email, password, confirmPassword, navigate });
-          }}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label>Usuário</Label>
             <Input
@@ -69,7 +102,7 @@ function Cadastro() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Button type="submit">Entre</Button>
+            <Button type="submit">Cadastrar</Button>
           </div>
         </form>
       </div>
