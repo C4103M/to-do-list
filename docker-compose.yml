@@ -9,6 +9,7 @@ services:
       MYSQL_USER: todo_user
       MYSQL_PASSWORD: secret123
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - dbcache-mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
