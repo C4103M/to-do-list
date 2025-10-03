@@ -36,7 +36,6 @@ export async function vaiParaHome(e, user, password, navigate, resetInputs) {
 
     const dados = await resposta.json();
 
-    localStorage.setItem("token", dados.token);
     localStorage.setItem("user", JSON.stringify(dados.user));
 
     alert("Login realizado com sucesso!");
