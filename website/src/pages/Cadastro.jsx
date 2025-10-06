@@ -4,7 +4,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Label from "../components/Label";
 import Button from "../components/Button";
-import verificarRegistro from "../services/verificarRegistro";
+import fetchCadastro from "../services/fetchCadastro";
 
 function Cadastro() {
   const navigate = useNavigate();
@@ -13,46 +13,21 @@ function Cadastro() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  async function handleSubmit(e) {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const resultado = verificarRegistro({
-      name,
-      email,
-      password,
-      confirmPassword,
-    });
-
-    if (!resultado.valido) {
-      alert(resultado.mensagem);
-      return;
-    }
-
     try {
-      const resposta = await fetch(
-        "http://localhost:8080/api/public/cadastro",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(resultado.user),
-        }
-      );
-
-      if (!resposta.ok) {
-        throw new Error("Erro no cadastro");
-      }
-
-      const dados = await resposta.json();
+      const userData = { name, email, password, confirmPassword };
+      await fetchCadastro(userData);
 
       alert("Usuário cadastrado com sucesso!");
-      console.log("Resposta da API:", dados);
-
       navigate("/");
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao cadastrar usuário.");
+      
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -66,6 +41,7 @@ function Cadastro() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Cadastro
         </h2>
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label>Usuário</Label>
