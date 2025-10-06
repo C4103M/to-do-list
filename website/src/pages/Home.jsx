@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserFromStorage } from "../services/auth";
-import ButtonDashbord from "./ButtonDashbord";
-import HomeSquares from "./HomeSquares";
-import TextSquares from "./TextSquare";
+import ButtonDashbord from "../components/ButtonDashbord";
+import HomeSquares from "../components/HomeSquares";
+import TextSquares from "../components/TextSquare";
 
 function Home() {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Input from "./Input";
-import Label from "./Label";
-import Button from "./Button";
+import Input from "../components/Input";
+import Label from "../components/Label";
+import Button from "../components/Button";
 import { vaiParaHome as homeHelper } from "../services/authHelpers";
 
 function Login() {
