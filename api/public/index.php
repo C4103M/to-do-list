@@ -14,18 +14,18 @@ function teste_cadastrar()
     $insercao->send();
 }
 function cadastrar() {
-    // $nome  = $_POST["nome"]  ?? null;
-    // $email = $_POST["email"] ?? null;
-    // $senha = $_POST["senha"] ?? null;
-    $token = $_POST['token'] ?? null;
+    $nome  = $_POST["nome"]  ?? null;
+    $email = $_POST["email"] ?? null;
+    $senha = $_POST["senha"] ?? null;
+    // $token = $_POST['token'] ?? null;
     
-    if ($token !== null) {
+    if ($nome !== null and $email !== null and $senha !== null) {
         $auth = new AuthService();
         try {
-            $data = $auth->decode_token($token);
-            $nome = $data['nome'];
-            $email = $data['email'];
-            $senha = $data['senha'];
+            // $data = $auth->decode_token($token);
+            // $nome = $data['nome'];
+            // $email = $data['email'];
+            // $senha = $data['senha'];
             $user_repo = new UserRepository();
             $insercao = $user_repo->cadastrar($nome, $email, $senha);
             $insercao->send();
@@ -37,16 +37,16 @@ function cadastrar() {
     }
 }
 function logar() {
-    $token = $_POST['token'] ?? null;
-    // $email = $_POST["email"] ?? null;
-    // $senha = $_POST["senha"] ?? null;
+    // $token = $_POST['token'] ?? null;
+    $email = $_POST["email"] ?? null;
+    $senha = $_POST["senha"] ?? null;
 
-    if($token != null) {
+    if($email != null and $senha ) {
         $auth_service = new AuthService();
         try {
-            $data = $auth_service->decode_token($token);
-            $email = $data['email'];
-            $senha = $data['senha'];
+            // $data = $auth_service->decode_token($token);
+            // $email = $data['email'];
+            // $senha = $data['senha'];
             $resposta = $auth_service->login($email, $senha);
             $resposta->send();
         } catch(Exception $e) {

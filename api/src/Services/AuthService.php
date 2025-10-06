@@ -49,6 +49,6 @@ class AuthService
         if(!password_verify($senha, $user->getHash())) {
             return new Response(401, "Não autorizado");
         }
-        return new Response(401, "Não autorizado", $this->gerar_token($user));
+        return new Response(200, "Usuário logado", $this->gerar_token($user));
     }
 }
