@@ -14,3 +14,4 @@ export function verificarToken() {
     return false;
   }
 }
+//VER SE AINDA É NECESSARIO COM A MUDANÇA DOS TOKENS
