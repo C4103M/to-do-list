@@ -35,8 +35,9 @@ class AuthService
         ];
         return JWT::encode($payload, $this->key_jwt, "HS256");
     }
-    public function decode_token($token) {
+    public function decode_token($token): array {
         $decoded = JWT::decode($token, new Key($this->key_jwt, 'HS256'));
+        $decoded = (array) $decoded;
         return $decoded;
     }
     public function login(string $email, string $senha)
