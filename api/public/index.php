@@ -7,6 +7,8 @@ use App\Repository\UserRepository;
 use App\Services\AuthService;
 use App\Services\Response;
 // Teste inserir usuário
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 function teste_cadastrar()
 {
     $user_repo = new UserRepository();
