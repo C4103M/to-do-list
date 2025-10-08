@@ -1,9 +1,6 @@
-import { Navigate } from "react-router-dom";
 import verificarRegistro from "./verificarRegistro";
 
-async function fetchCadastro({ name, email, password, confirmPassword }, e) {
-  e.preventDefault();
-
+async function fetchCadastro({ name, email, password, confirmPassword }) {
   const resultado = verificarRegistro({
     name,
     email,
@@ -12,31 +9,22 @@ async function fetchCadastro({ name, email, password, confirmPassword }, e) {
   });
 
   if (!resultado.valido) {
-    alert(resultado.mensagem);
-    return;
+    throw new Error(resultado.mensagem);
   }
 
-  try {
-    const resposta = await fetch("http://localhost:8080/api/public/cadastro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(resultado.user),
-    });
+  const resposta = await fetch("http://localhost:8080/api/public/cadastro", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(resultado.user),
+  });
 
-    if (!resposta.ok) {
-      throw new Error("Erro no cadastro");
-    }
-
-    const dados = await resposta.json();
-
-    alert("Usuário cadastrado com sucesso!");
-    console.log("Resposta da API:", dados);
-
-    Navigate("/");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao cadastrar usuário.");
+  if (!resposta.ok) {
+    throw new Error("Erro no cadastro");
   }
+
+  const dados = await resposta.json();
+  console.log("Resposta da API:", dados);
+  return dados;
 }
 
 export default fetchCadastro;
