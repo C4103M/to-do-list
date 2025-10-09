@@ -35,8 +35,9 @@ class AuthService
         ];
         return JWT::encode($payload, $this->key_jwt, "HS256");
     }
-    public function decode_token($token) {
+    public function decode_token($token): array {
         $decoded = JWT::decode($token, new Key($this->key_jwt, 'HS256'));
+        $decoded = (array) $decoded;
         return $decoded;
     }
     public function login(string $email, string $senha)
@@ -48,6 +49,6 @@ class AuthService
         if(!password_verify($senha, $user->getHash())) {
             return new Response(401, "Não autorizado");
         }
-        return new Response(401, "Não autorizado", $this->gerar_token($user));
+        return new Response(200, "Usuário logado", $this->gerar_token($user));
     }
 }
