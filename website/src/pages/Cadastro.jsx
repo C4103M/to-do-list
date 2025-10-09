@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Label from "../components/Label";
 import Button from "../components/Button";
 import fetchCadastro from "../services/fetchCadastro";
+import verificarRegistro from "../services/verificarRegistro";
 
 function Cadastro() {
   const navigate = useNavigate();
@@ -13,16 +14,24 @@ function Cadastro() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const userData = { name, email, password, confirmPassword };
-      await fetchCadastro(userData);
-
-      alert("Usuário cadastrado com sucesso!");
-      navigate("/");
-      
+      let reg = verificarRegistro({ name, email, password, confirmPassword });
+      console.log(name, email, password);
+      if (reg.valido) {
+        let form_data = new FormData();
+        form_data.append("nome", name);
+        form_data.append("email", email);
+        form_data.append("senha", password);
+        
+        await fetchCadastro(form_data);
+        alert("Usuário cadastrado com sucesso!");
+        navigate("/");
+      } else {
+        throw new Error(reg.mensagem);
+      }
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -41,7 +50,7 @@ function Cadastro() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Cadastro
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label>Usuário</Label>

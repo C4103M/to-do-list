@@ -1,28 +1,18 @@
-import verificarRegistro from "./verificarRegistro";
-
-async function fetchCadastro({ name, email, password, confirmPassword }) {
-  const resultado = verificarRegistro({
-    name,
-    email,
-    password,
-    confirmPassword,
-  });
-
-  if (!resultado.valido) {
-    throw new Error(resultado.mensagem);
-  }
-
+async function fetchCadastro(form_data) {
+  console.log(form_data.get("nome"));
+  console.log(form_data.get("email"));
+  console.log(form_data.get("senha"));
+  
   const resposta = await fetch("http://localhost:8080/api/public/cadastro", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(resultado.user),
+    body: form_data,
   });
 
   if (!resposta.ok) {
     throw new Error("Erro no cadastro");
   }
 
-  const dados = await resposta.json();
+  const dados = await resposta.text();
   console.log("Resposta da API:", dados);
   return dados;
 }
