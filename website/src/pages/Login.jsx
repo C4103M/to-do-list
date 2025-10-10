@@ -7,16 +7,24 @@ import { vaiParaHome as homeHelper } from "../services/authHelpers";
 
 function Login() {
   const navigate = useNavigate();
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function resetInputs() {
-    setUser("");
+    setEmail("");
     setPassword("");
   }
 
   function vaiParaHome(e) {
-    homeHelper(e, user, password, navigate, resetInputs);
+    if (!email.trim() || !password.trim()) {
+      alert("Preencha usuário e senha.");
+      return;
+    }
+    let form_data = new FormData();
+    form_data.append("email", email);
+    form_data.append("password", password);
+
+    homeHelper(e, form_data, navigate, resetInputs);
   }
 
   function vaiParaCadastro() {
@@ -35,8 +43,8 @@ function Login() {
             <Input
               type="text"
               placeholder="Digite seu usuário"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
