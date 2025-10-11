@@ -21,21 +21,25 @@ function Home() {
       const pending = [];
       const completed = [];
       const overdue = [];
-      
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       for (const dayString in allTasks) {
         const taskDate = new Date(dayString);
-        taskDate.setMinutes(taskDate.getMinutes() + taskDate.getTimezoneOffset());
+        taskDate.setMinutes(
+          taskDate.getMinutes() + taskDate.getTimezoneOffset()
+        );
         taskDate.setHours(0, 0, 0, 0);
 
-        allTasks[dayString].forEach(task => {
+        allTasks[dayString].forEach((task) => {
           const taskInfo = {
             ...task,
-            date: new Date(dayString).toLocaleDateString('pt-BR', {timeZone: 'UTC'})
+            date: new Date(dayString).toLocaleDateString("pt-BR", {
+              timeZone: "UTC",
+            }),
           };
-          
+
           if (task.done) {
             completed.push(taskInfo);
           } else {
@@ -49,8 +53,20 @@ function Home() {
       }
 
       setCompletedTasks(completed);
-      setPendingTasks(pending.sort((a, b) => new Date(a.date.split('/').reverse().join('-')) - new Date(b.date.split('/').reverse().join('-'))));
-      setOverdueTasks(overdue.sort((a, b) => new Date(a.date.split('/').reverse().join('-')) - new Date(b.date.split('/').reverse().join('-'))));
+      setPendingTasks(
+        pending.sort(
+          (a, b) =>
+            new Date(a.date.split("/").reverse().join("-")) -
+            new Date(b.date.split("/").reverse().join("-"))
+        )
+      );
+      setOverdueTasks(
+        overdue.sort(
+          (a, b) =>
+            new Date(a.date.split("/").reverse().join("-")) -
+            new Date(b.date.split("/").reverse().join("-"))
+        )
+      );
     }
   }, []);
 
@@ -62,11 +78,13 @@ function Home() {
     <div className="min-h-screen flex bg-gray-100">
       <aside className="w-64 bg-white p-6 shadow-lg flex flex-col items-start">
         <h2 className="text-xl font-bold mb-6 items-start">Menu</h2>
-        <ButtonDashbord type="button" onClick={vaiParaDashbord}>Dashboard</ButtonDashbord>
+        <ButtonDashbord type="button" onClick={vaiParaDashbord}>
+          Dashboard
+        </ButtonDashbord>
         <ButtonDashbord>Tarefas</ButtonDashbord>
         <ButtonDashbord>Perfil</ButtonDashbord>
       </aside>
-      
+
       <main className="flex-1 p-6">
         <h1 className="text-2xl font-bold mb-6">Bem-vindo, {user.name}!</h1>
 
@@ -85,13 +103,13 @@ function Home() {
               <p className="text-sm text-gray-400">Nenhuma tarefa atrasada.</p>
             )}
           </HomeSquares>
-          
+
           <HomeSquares>
             <h3 className="font-semibold mb-2">Tarefas Pendentes</h3>
             {pendingTasks.length > 0 ? (
               pendingTasks.map((task, index) => (
                 <TextSquares key={index}>
-                    {task.text} - <strong>{task.date}</strong>
+                  {task.text} - <strong>{task.date}</strong>
                 </TextSquares>
               ))
             ) : (
@@ -106,7 +124,9 @@ function Home() {
                 <TextSquares key={index}>{task.text}</TextSquares>
               ))
             ) : (
-              <p className="text-sm text-gray-400">Nenhuma tarefa concluída ainda.</p>
+              <p className="text-sm text-gray-400">
+                Nenhuma tarefa concluída ainda.
+              </p>
             )}
           </HomeSquares>
         </div>
