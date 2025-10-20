@@ -27,9 +27,9 @@ function Login() {
     homeHelper(e, form_data, navigate, resetInputs);
   }
 
-    function vaiParaCadastro() {
-        navigate("/cadastro");
-    }
+  function vaiParaCadastro() {
+    navigate("/cadastro");
+  }
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
