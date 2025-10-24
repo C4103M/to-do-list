@@ -39,7 +39,7 @@ function Login() {
         </h2>
         <form className="space-y-4" onSubmit={vaiParaHome}>
           <div>
-            <Label className="block text-gray-600 text-sm mb-1">Usuário</Label>
+            <Label className="block text-gray-600 text-sm mb-1">Email</Label>
             <Input
               type="text"
               placeholder="Digite seu usuário"
