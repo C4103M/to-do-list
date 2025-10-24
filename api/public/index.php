@@ -10,8 +10,6 @@ use App\Repository\UserRepository;
 use App\Services\AuthService;
 use App\Services\Response;
 // Teste inserir usuário
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 function teste_cadastrar()
 {
     $user_repo = new UserRepository();
@@ -33,27 +31,17 @@ function cadastrar() {
             echo (new Response(400, "falha ao decodificar o token. Verifique os parâmetros que você passou ou a senha de codificação"))->send();
         }
     } else {
-        (new Response(400, "Token inválido"))->send();
+        (new Response(400, "Parâmetros inválidos"))->send();
     }
 }
 function logar() {
-    // $token = $_POST['token'] ?? null;
     $email = $_POST["email"] ?? null;
     $senha = $_POST["senha"] ?? null;
 
-    if($email != null and $senha ) {
+    if($email != null && $senha != null ) {
         $auth_service = new AuthService();
-        try {
-            // $data = $auth_service->decode_token($token);
-            // $email = $data['email'];
-            // $senha = $data['senha'];
-            $resposta = $auth_service->login($email, $senha);
-            $resposta->send();
-        } catch(Exception $e) {
-            echo (new Response($e->getCode(), "Falha ao decodificar o token. Verifique 
-                os parâmetros que você passou ou a senha de codificação. Erro: ".
-            $e->getMessage()))->send();
-        }
+        $resposta = $auth_service->login($email, $senha);
+        $resposta->send();
     }
 }
 

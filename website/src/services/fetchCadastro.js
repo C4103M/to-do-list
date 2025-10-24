@@ -1,42 +1,20 @@
-import { Navigate } from "react-router-dom";
-import verificarRegistro from "./verificarRegistro";
-
-async function fetchCadastro({ name, email, password, confirmPassword }, e) {
-  e.preventDefault();
-
-  const resultado = verificarRegistro({
-    name,
-    email,
-    password,
-    confirmPassword,
+async function fetchCadastro(form_data) {
+  console.log(form_data.get("nome"));
+  console.log(form_data.get("email"));
+  console.log(form_data.get("senha"));
+  
+  const resposta = await fetch("http://localhost:8080/api/public/cadastro", {
+    method: "POST",
+    body: form_data,
   });
 
-  if (!resultado.valido) {
-    alert(resultado.mensagem);
-    return;
+  if (!resposta.ok) {
+    throw new Error("Erro no cadastro");
   }
 
-  try {
-    const resposta = await fetch("http://localhost:8080/api/public/cadastro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(resultado.user),
-    });
-
-    if (!resposta.ok) {
-      throw new Error("Erro no cadastro");
-    }
-
-    const dados = await resposta.json();
-
-    alert("Usuário cadastrado com sucesso!");
-    console.log("Resposta da API:", dados);
-
-    Navigate("/");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao cadastrar usuário.");
-  }
+  const dados = await resposta.text();
+  console.log("Resposta da API:", dados);
+  return dados;
 }
 
 export default fetchCadastro;

@@ -11,3 +11,5 @@ export function getUserFromStorage() {
     return null;
   }
 }
+
+//VER SE AINDA É NECESSARIO COM A MUDANÇA DOS TOKENS
