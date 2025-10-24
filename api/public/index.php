@@ -1,4 +1,7 @@
-<?php header('Content-Type: application/json');
+<?php
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Credentials: true');
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -19,15 +22,10 @@ function cadastrar() {
     $nome  = $_POST["nome"]  ?? null;
     $email = $_POST["email"] ?? null;
     $senha = $_POST["senha"] ?? null;
-    // $token = $_POST['token'] ?? null;
     
     if ($nome !== null and $email !== null and $senha !== null) {
         $auth = new AuthService();
         try {
-            // $data = $auth->decode_token($token);
-            // $nome = $data['nome'];
-            // $email = $data['email'];
-            // $senha = $data['senha'];
             $user_repo = new UserRepository();
             $insercao = $user_repo->cadastrar($nome, $email, $senha);
             $insercao->send();

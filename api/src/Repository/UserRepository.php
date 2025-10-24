@@ -48,16 +48,38 @@ class UserRepository
                 'email' => $novoUsuario->getEmail(),
                 'senha' => $novoUsuario->getHash()
             ]);
-            if(!$ok) throw new Exception("Algo deu errado", 500);
+            if (!$ok) throw new Exception("Algo deu errado", 500);
             // pega o ID gerado automaticamente
             $id = (int) $this->pdo->lastInsertId();
             $novoUsuario->setId($id);
 
-            // retorna a resposta pronta para o frontend
+            // Seta os cookies para requisições futuras
+
             $auth_service = new AuthService();
             $token = $auth_service->gerar_token($novoUsuario);
-            $resp = new Response(200, "Usuário cadastrado com sucesso", $token);
+            $resp = $this->setTk($token);;
             return $resp;
+        } catch (Exception $e) {
+            return new Response($e->getCode(), $e->getMessage());
+        }
+    }
+    public function setTk($tk)
+    {
+        try {
+            $cookie_name = 'access_token';
+            setcookie(
+                $cookie_name,
+                $tk,
+                [
+                    'expires' => time() + 3600,
+                    'path' => '/',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'None'
+                ]
+            );
+            http_response_code(201);
+            return new Response(201, "Usuário cadastrado com sucesso");
         } catch (Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }
