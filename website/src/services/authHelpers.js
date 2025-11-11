@@ -15,7 +15,7 @@ export function verificarLogin(emailInput, passwordInput) {
   return false;
 }
 
-export async function vaiParaHome(e, form_data, navigate, resetInputs) {
+export async function logar(e, form_data, resetInputs) {
   e.preventDefault();
 
   try {
@@ -23,21 +23,22 @@ export async function vaiParaHome(e, form_data, navigate, resetInputs) {
       method: "POST",
       body: form_data,
     });
-
+    //Verificar se retornou JSON (futuramente)
     const dados = await resposta.json();
 
-    if(dados.status != 200){
-      throw new Error(dados.message)
-    }
-    else {
-      localStorage.setItem("token", dados.token);
+    if (dados.status != 200) {
+      throw new Error(dados.message);
+    } else {
       alert("Login realizado com sucesso!");
       resetInputs();
-      navigate("/home");
+      vaiParaHome();
     }
-
   } catch (erro) {
     console.error(erro);
     alert("Falha ao realizar login.");
   }
+}
+
+function vaiParaHome() {
+  navigate("/home");
 }

@@ -16,6 +16,10 @@ function Login() {
   }
 
   function vaiParaHome(e) {
+    navigate("/home");
+  }
+
+  function verified() {
     if (!email.trim() || !password.trim()) {
       alert("Preencha usuário e senha.");
       return;
@@ -37,7 +41,13 @@ function Login() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Login
         </h2>
-        <form className="space-y-4" onSubmit={vaiParaHome}>
+        <form
+          className="space-y-4"
+          onSubmit={() => {
+            verified();
+            vaiParaHome();
+          }}
+        >
           <div>
             <Label className="block text-gray-600 text-sm mb-1">Email</Label>
             <Input
