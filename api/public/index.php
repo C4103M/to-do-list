@@ -24,11 +24,12 @@ function teste_cadastrar()
     $insercao = $user_repo->cadastrar("Sergio Bastos", "sergio@10", "1234");
     $insercao->send();
 }
-function cadastrar() {
+function cadastrar()
+{
     $nome  = $_POST["nome"]  ?? null;
     $email = $_POST["email"] ?? null;
     $senha = $_POST["senha"] ?? null;
-    
+
     if ($nome !== null and $email !== null and $senha !== null) {
         $auth = new AuthService();
         try {
@@ -42,12 +43,13 @@ function cadastrar() {
         (new Response(400, "Token inválido"))->send();
     }
 }
-function logar() {
+function logar()
+{
     // $token = $_POST['token'] ?? null;
     $email = $_POST["email"] ?? null;
     $senha = $_POST["senha"] ?? null;
 
-    if($email != null and $senha ) {
+    if ($email != null and $senha) {
         $auth_service = new AuthService();
         try {
             // $data = $auth_service->decode_token($token);
@@ -55,15 +57,29 @@ function logar() {
             // $senha = $data['senha'];
             $resposta = $auth_service->login($email, $senha);
             $resposta->send();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             echo (new Response($e->getCode(), "Falha ao decodificar o token. Verifique 
-                os parâmetros que você passou ou a senha de codificação. Erro: ".
-            $e->getMessage()))->send();
+                os parâmetros que você passou ou a senha de codificação. Erro: " .
+                $e->getMessage()))->send();
         }
     }
 }
 
-
+function verificar_me()
+{
+    if (isset($_COOKIE['access_token'])) {
+        $user_token = $_COOKIE['access_token'];
+        $auth_service = new AuthService();
+        if($auth_service->decode_token($user_token)) {
+            $resposta = new Response(200, "Usuário está logado");
+        } else {
+            $resposta = new Response(500, "Usuário não está logado");
+        }
+        $resposta->send();
+    } else {
+        echo "Cookie não encontrado.";
+    }
+}
 
 // Pega a URL requisitada
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -80,6 +96,10 @@ switch ($uri) {
 
     case '/login':
         logar();
+        break;
+
+    case '/me':
+        verificar_me();
         break;
 
     default:

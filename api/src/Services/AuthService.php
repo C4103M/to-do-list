@@ -7,7 +7,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Services\Response;
 use App\repository\UserRepository;
-
+use Exception;
 require __DIR__ . '/../../vendor/autoload.php';
 
 $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../Config');
@@ -36,9 +36,14 @@ class AuthService
         return JWT::encode($payload, $this->key_jwt, "HS256");
     }
     public function decode_token($token): array {
-        $decoded = JWT::decode($token, new Key($this->key_jwt, 'HS256'));
-        $decoded = (array) $decoded;
-        return $decoded;
+        try {
+            $decoded = JWT::decode($token, new Key($this->key_jwt, 'HS256'));
+            return (array) $decoded; // token válido -> retorna dados decodificados
+        } catch (\Firebase\JWT\ExpiredException $e) {
+            throw new Exception("Token expirado", 401);
+        } catch (Exception $e) {
+            throw new Exception("Token inválido", 401);
+        }
     }
     public function login(string $email, string $senha)
     {
@@ -55,4 +60,6 @@ class AuthService
             return new Response(200, "Usuário logado com sucesso");
         }
     }
+
+
 }
