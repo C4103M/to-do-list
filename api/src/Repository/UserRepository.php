@@ -57,8 +57,12 @@ class UserRepository
 
             $auth_service = new AuthService();
             $token = $auth_service->gerar_token($novoUsuario);
-            $resp = $this->setTk($token);;
-            return $resp;
+            $resp = $this->setTk($token);
+            if ($resp->status == 200) {
+                return new Response(201, "Usuário cadastrado com sucesso");
+            } else {
+                throw new Exception("Erro ao cadastrar");
+            }
         } catch (Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }
@@ -79,7 +83,7 @@ class UserRepository
                 ]
             );
             http_response_code(201);
-            return new Response(201, "Usuário cadastrado com sucesso");
+            return new Response(200, "cookies setado com sucesso");
         } catch (Exception $e) {
             return new Response($e->getCode(), $e->getMessage());
         }

@@ -50,6 +50,9 @@ class AuthService
             return new Response(401, "Não autorizado");
         }
         $token = $this->gerar_token($user);
-        return $this->userRepo->setTk($token);
+        $tk = $this->userRepo->setTk($token);
+        if($tk->status == 200) {
+            return new Response(200, "Usuário logado com sucesso");
+        }
     }
 }

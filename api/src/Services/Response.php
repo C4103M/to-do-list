@@ -2,7 +2,7 @@
 namespace App\Services;
 
 class Response implements \JsonSerializable {
-    private int $status;
+    public int $status;
     private string $message;
     private mixed $token;
 
